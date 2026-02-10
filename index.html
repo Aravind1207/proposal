@@ -64,8 +64,9 @@
   <div class="env" onclick="openEnvelope()"><p>Tap to open 💌</p></div>
 </div>
 
-<audio id="bgm" preload="auto" loop>
-  <source src="pookal-pookum-tharunam.mp3" type="audio/mpeg" />
+<!-- Background Music (GitHub Pages 416-safe) -->
+<audio id="bgm" loop>
+  <source src="./pookal-pookum-tharunam.mp3" type="audio/mpeg">
 </audio>
 
 <div id="lock" style="position:fixed;inset:0;background:#f7efe3;display:none;align-items:center;justify-content:center;z-index:9000">
@@ -151,10 +152,13 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(document.getElementById('pass').value.trim().toLowerCase()==='mine'){
       document.getElementById('lock').style.display='none';
       go('p1');
-      const m=document.getElementById('bgm');
-      m.volume=0;
-      m.play();
-      fadeIn(m);
+
+      const m = document.getElementById('bgm');
+      if(m){
+        m.currentTime = 0;
+        m.volume = 0.4; // safe start volume
+        m.play().catch(()=>{});
+      }
       startCountdown();
     } else {
       alert('Almost 😄');
@@ -197,14 +201,14 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   window.sayYes=()=>{
     const m = document.getElementById('bgm');
-    // Boost volume slightly at YES moment
+    // Romantic volume swell at YES moment
     if(m){
-      let v = m.volume;
+      let v = m.volume || 0.4;
       const boost = setInterval(()=>{
         v += 0.05;
         m.volume = Math.min(v, 1);
         if(v >= 1) clearInterval(boost);
-      }, 100);
+      }, 120);
     }
 
     document.getElementById('flames').style.display='block';
