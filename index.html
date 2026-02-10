@@ -142,85 +142,99 @@
 <script>
 document.addEventListener('DOMContentLoaded',()=>{
 
-window.openEnvelope=()=>{
-  document.getElementById('envelope').style.display='none';
-  document.getElementById('lock').style.display='flex';
-}
+  window.openEnvelope=()=>{
+    document.getElementById('envelope').style.display='none';
+    document.getElementById('lock').style.display='flex';
+  };
 
-window.unlock=()=>{
-  if(document.getElementById('pass').value.trim().toLowerCase()==='mine'){
-    document.getElementById('lock').style.display='none';
-    go('p1');
-    const m=document.getElementById('bgm');
-    m.volume=0; m.play(); fadeIn(m);
-    startCountdown();
-  } else {
-    alert('Almost 😄');
+  window.unlock=()=>{
+    if(document.getElementById('pass').value.trim().toLowerCase()==='mine'){
+      document.getElementById('lock').style.display='none';
+      go('p1');
+      const m=document.getElementById('bgm');
+      m.volume=0;
+      m.play();
+      fadeIn(m);
+      startCountdown();
+    } else {
+      alert('Almost 😄');
+    }
+  };
+
+  function fadeIn(m){
+    let v = 0;
+    m.volume = 0;
+    const i = setInterval(() => {
+      v += 0.05;
+      m.volume = Math.min(v, 1);
+      if (v >= 1) clearInterval(i);
+    }, 80);
   }
-}
 
-function fadeIn(m){
-  let v = 0;
-  m.volume = 0;
-  const i = setInterval(() => {
-    v += 0.02;
-    m.volume = Math.min(v, 0.4);
-    if (v >= 0.4) clearInterval(i);
-  }, 120);
-}
+  window.addEventListener('beforeprint', () => {
+    const m = document.getElementById('bgm');
+    if (m) m.pause();
+  });
 
-window.addEventListener('beforeprint', () => {
-  const m = document.getElementById('bgm');
-  if (m) m.pause();
-});
+  window.addEventListener('afterprint', () => {
+    const m = document.getElementById('bgm');
+    if (m) m.play();
+  });
 
-window.addEventListener('afterprint', () => {
-  const m = document.getElementById('bgm');
-  if (m) m.play();
-});
+  window.go=(id)=>{
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+  };
 
-window.go=(id)=>{
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
-}
+  window.loveAnswer=(a)=>{
+    document.getElementById('loveMsg').textContent = a==='Both' ? 'Correct answer 😌❤️' : 'Think bigger 😄';
+  };
 
-window.loveAnswer=(a)=>{
-  document.getElementById('loveMsg').textContent = a==='Both' ? 'Correct answer 😌❤️' : 'Think bigger 😄';
-}
+  window.crabAnswer=()=>{
+    document.getElementById('crabMsg').textContent='Only for you 🦀❤️';
+  };
 
-window.crabAnswer=()=>{
-  document.getElementById('crabMsg').textContent='Only for you 🦀❤️';
-}
+  window.sayYes=()=>{
+    const m = document.getElementById('bgm');
+    // Boost volume slightly at YES moment
+    if(m){
+      let v = m.volume;
+      const boost = setInterval(()=>{
+        v += 0.05;
+        m.volume = Math.min(v, 1);
+        if(v >= 1) clearInterval(boost);
+      }, 100);
+    }
 
-window.sayYes=()=>{
-  document.getElementById('flames').style.display='block';
-  for(let i=0;i<20;i++) spawnHeart();
-  setTimeout(()=>go('printPage'),1200);
-}
+    document.getElementById('flames').style.display='block';
+    for(let i=0;i<20;i++) spawnHeart();
+    setTimeout(()=>go('printPage'),1200);
+  };
 
-function spawnHeart(){
-  const h=document.createElement('div');
-  h.className='heart'; h.textContent='❤️';
-  h.style.left=Math.random()*100+'vw';
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),6000);
-}
+  function spawnHeart(){
+    const h=document.createElement('div');
+    h.className='heart';
+    h.textContent='❤️';
+    h.style.left=Math.random()*100+'vw';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+  }
 
-function startCountdown(){
-  const el=document.getElementById('countdown');
-  const end=new Date('2025-02-14T19:00:00').getTime();
-  setInterval(()=>{
-    const d=end-Date.now();
-    el.textContent = d<=0 ? 'This moment is forever 💍' : `${Math.floor(d/86400000)}d ${Math.floor((d%86400000)/3600000)}h ${Math.floor((d%3600000)/60000)}m`;
-  },1000);
-}
+  function startCountdown(){
+    const el=document.getElementById('countdown');
+    const end=new Date('2025-02-14T19:00:00').getTime();
+    setInterval(()=>{
+      const d=end-Date.now();
+      el.textContent = d<=0 ? 'This moment is forever 💍' : `${Math.floor(d/86400000)}d ${Math.floor((d%86400000)/3600000)}h ${Math.floor((d%3600000)/60000)}m`;
+    },1000);
+  }
 
-window.openImg=(s)=>{
-  const lb=document.getElementById('lightbox');
-  lb.style.display='flex';
-  lb.querySelector('img').src=s;
-}
+  window.openImg=(s)=>{
+    const lb=document.getElementById('lightbox');
+    lb.style.display='flex';
+    lb.querySelector('img').src=s;
+  };
 
 });
 </script>
