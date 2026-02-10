@@ -34,21 +34,17 @@
     .kavithai{font-size:22px;line-height:1.7}
     .print-note{font-size:14px;opacity:.7;text-align:center;margin-top:24px}
 
-    /* Envelope */
     #envelope{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#f3e7d8;z-index:10000}
     .env{width:260px;height:180px;background:#e2c7a2;border-radius:10px;position:relative;cursor:pointer}
     .env:before{content:'';position:absolute;inset:0;background:#d6b48a;clip-path:polygon(0 0,100% 0,50% 60%)}
     .env p{position:absolute;bottom:16px;width:100%;text-align:center;font-size:20px}
 
-    /* Gallery */
     .gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
     .gallery img{width:100%;border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,.15);cursor:pointer}
 
-    /* Lightbox */
     #lightbox{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:9000}
     #lightbox img{max-width:90%;border-radius:16px}
 
-    /* Hearts */
     .heart{position:fixed;bottom:-20px;font-size:22px;animation:float 6s linear forwards;pointer-events:none}
     @keyframes float{to{transform:translateY(-110vh);opacity:0}}
 
@@ -64,16 +60,14 @@
 </head>
 <body>
 
-<!-- Envelope -->
 <div id="envelope">
   <div class="env" onclick="openEnvelope()"><p>Tap to open 💌</p></div>
 </div>
 
-<audio id="bgm" loop>
+<audio id="bgm" preload="auto" loop>
   <source src="pookal-pookum-tharunam.mp3" type="audio/mpeg" />
 </audio>
 
-<!-- Lock -->
 <div id="lock" style="position:fixed;inset:0;background:#f7efe3;display:none;align-items:center;justify-content:center;z-index:9000">
   <div class="paper center">
     <h2>Secret Question 🔐</h2>
@@ -83,7 +77,6 @@
   </div>
 </div>
 
-<!-- PAGE 1 -->
 <section class="page active" id="p1">
   <div class="paper center">
     <h1>My Dearest Lavanya ❤️</h1>
@@ -93,7 +86,6 @@
   </div>
 </section>
 
-<!-- PAGE 2 -->
 <section class="page" id="p2">
   <div class="paper">
     <h2 class="center">Our Memories 💞</h2>
@@ -104,18 +96,14 @@
       <img src="images/3.jpg" onclick="openImg(this.src)" />
       <img src="images/4.jpg" onclick="openImg(this.src)" />
     </div>
-    <div class="center" style="margin-top:24px">
-      <button class="btn" onclick="go('p3')">Next ➜</button>
-    </div>
+    <div class="center" style="margin-top:24px"><button class="btn" onclick="go('p3')">Next ➜</button></div>
   </div>
 </section>
 
-<!-- PAGE 3 -->
 <section class="page" id="p3">
   <div class="paper">
     <h2 class="center">Just a Few Questions 😄</h2>
     <div class="divider"></div>
-
     <p class="kavithai center">How much do you love me? 💕</p>
     <div class="center">
       <button class="btn" onclick="loveAnswer('Sea')">Sea 🌊</button>
@@ -123,18 +111,13 @@
       <button class="btn" onclick="loveAnswer('Both')">Both 😌</button>
     </div>
     <p id="loveMsg" class="center"></p>
-
     <p class="kavithai center">You need a crab bite right? 🦀😄</p>
-    <div class="center">
-      <button class="btn" onclick="crabAnswer()">Yes 😄</button>
-    </div>
+    <div class="center"><button class="btn" onclick="crabAnswer()">Yes 😄</button></div>
     <p id="crabMsg" class="center"></p>
-
     <div class="center"><button class="btn" onclick="go('p4')">Next ➜</button></div>
   </div>
 </section>
 
-<!-- PAGE 4 -->
 <section class="page" id="p4">
   <div class="paper center">
     <h2>Will you marry me? 💍</h2>
@@ -144,7 +127,6 @@
   </div>
 </section>
 
-<!-- PAGE 5 -->
 <section class="page" id="printPage">
   <div class="paper">
     <h2 class="center">A Letter Forever 💌</h2>
@@ -169,12 +151,33 @@ window.unlock=()=>{
   if(document.getElementById('pass').value.trim().toLowerCase()==='mine'){
     document.getElementById('lock').style.display='none';
     go('p1');
-    const m=document.getElementById('bgm');m.volume=0;m.play();fadeIn(m);
+    const m=document.getElementById('bgm');
+    m.volume=0; m.play(); fadeIn(m);
     startCountdown();
-  }else alert('Almost 😄');
+  } else {
+    alert('Almost 😄');
+  }
 }
 
-function fadeIn(m){let v=0;const i=setInterval(()=>{v+=.02;m.volume=Math.min(v,.4);if(v>=.4)clearInterval(i)},120)}
+function fadeIn(m){
+  let v = 0;
+  m.volume = 0;
+  const i = setInterval(() => {
+    v += 0.02;
+    m.volume = Math.min(v, 0.4);
+    if (v >= 0.4) clearInterval(i);
+  }, 120);
+}
+
+window.addEventListener('beforeprint', () => {
+  const m = document.getElementById('bgm');
+  if (m) m.pause();
+});
+
+window.addEventListener('afterprint', () => {
+  const m = document.getElementById('bgm');
+  if (m) m.play();
+});
 
 window.go=(id)=>{
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -183,7 +186,7 @@ window.go=(id)=>{
 }
 
 window.loveAnswer=(a)=>{
-  document.getElementById('loveMsg').textContent=a==='Both'?'Correct answer 😌❤️':'Think bigger 😄';
+  document.getElementById('loveMsg').textContent = a==='Both' ? 'Correct answer 😌❤️' : 'Think bigger 😄';
 }
 
 window.crabAnswer=()=>{
@@ -192,15 +195,32 @@ window.crabAnswer=()=>{
 
 window.sayYes=()=>{
   document.getElementById('flames').style.display='block';
-  for(let i=0;i<20;i++)spawnHeart();
+  for(let i=0;i<20;i++) spawnHeart();
   setTimeout(()=>go('printPage'),1200);
 }
 
-function spawnHeart(){const h=document.createElement('div');h.className='heart';h.textContent='❤️';h.style.left=Math.random()*100+'vw';document.body.appendChild(h);setTimeout(()=>h.remove(),6000)}
+function spawnHeart(){
+  const h=document.createElement('div');
+  h.className='heart'; h.textContent='❤️';
+  h.style.left=Math.random()*100+'vw';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+}
 
-function startCountdown(){const el=document.getElementById('countdown');const end=new Date('2025-02-14T19:00:00').getTime();setInterval(()=>{const d=end-Date.now();el.textContent=d<=0?'This moment is forever 💍':`${Math.floor(d/86400000)}d ${Math.floor((d%86400000)/3600000)}h ${Math.floor((d%3600000)/60000)}m`},1000)}
+function startCountdown(){
+  const el=document.getElementById('countdown');
+  const end=new Date('2025-02-14T19:00:00').getTime();
+  setInterval(()=>{
+    const d=end-Date.now();
+    el.textContent = d<=0 ? 'This moment is forever 💍' : `${Math.floor(d/86400000)}d ${Math.floor((d%86400000)/3600000)}h ${Math.floor((d%3600000)/60000)}m`;
+  },1000);
+}
 
-window.openImg=(s)=>{const lb=document.getElementById('lightbox');lb.style.display='flex';lb.querySelector('img').src=s}
+window.openImg=(s)=>{
+  const lb=document.getElementById('lightbox');
+  lb.style.display='flex';
+  lb.querySelector('img').src=s;
+}
 
 });
 </script>
