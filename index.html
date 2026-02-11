@@ -222,14 +222,20 @@ input{
 </section>
 
 <section class="page" id="p3">
-  <div class="paper center">
-    <h2>Just a Few Questions 😄</h2>
-    <p>How much do you love me?</p>
-    <button class="btn" onclick="loveAnswer('Sea')">Sea 🌊</button>
-    <button class="btn" onclick="loveAnswer('Sky')">Sky 🌌</button>
-    <button class="btn" onclick="loveAnswer('Both')">Both 😌</button>
-    <p id="loveMsg"></p>
-    <button class="btn" onclick="go('p4')">Next ➜</button>
+  <div class="paper">
+    <h2 class="center">Just a Few Questions 😄</h2>
+    <div class="divider"></div>
+    <p class="kavithai center">How much do you love me? 💕</p>
+    <div class="center">
+      <button class="btn" onclick="loveAnswer('Sea')">Sea 🌊</button>
+      <button class="btn" onclick="loveAnswer('Sky')">Sky 🌌</button>
+      <button class="btn" onclick="loveAnswer('Both')">Both 😌</button>
+    </div>
+    <p id="loveMsg" class="center"></p>
+    <p class="kavithai center">You need a crab bite right? 🦀😄</p>
+    <div class="center"><button class="btn" onclick="crabAnswer()">Yes 😄</button></div>
+    <p id="crabMsg" class="center"></p>
+    <div class="center"><button class="btn" onclick="go('p4')">Next ➜</button></div>
   </div>
 </section>
 
