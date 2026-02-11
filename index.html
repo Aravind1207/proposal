@@ -39,6 +39,16 @@ input{
   border-radius:10px;
   border:1px solid #c45b5b;
 }
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+.gallery img{
+  width:100%;
+  border-radius:15px;
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
 .heart{
   position:fixed;
   bottom:-30px;
@@ -68,45 +78,73 @@ input{
 
 <body>
 
-<!-- 🎵 BACKGROUND MUSIC -->
+<!-- 🎵 MUSIC -->
 <audio id="bgm" loop playsinline>
-  <source src="https://cdn.jsdelivr.net/gh/Aravind1207/proposal@main/pookal-pookum-tharunam.mp3" type="audio/mpeg">
+<source src="https://cdn.jsdelivr.net/gh/Aravind1207/proposal@main/pookal-pookum-tharunam.mp3" type="audio/mpeg">
 </audio>
 
-<!-- 🔐 LOCK SCREEN -->
+<!-- 🔐 LOCK -->
 <div id="lock">
   <div class="paper center">
     <h2>Secret Question 🔐</h2>
 
-    <!-- MUSIC BUTTON -->
     <button class="btn" onclick="startMusic()">🎵 Start Music</button>
 
-    <p style="margin-top:20px">
-      In my mobile, under which name is your contact saved? ❤️
-    </p>
-
+    <p>In my mobile, under which name is your contact saved? ❤️</p>
     <input id="pass" placeholder="Type here">
-
     <br>
-
     <button class="btn" onclick="unlock()">Unlock 💌</button>
   </div>
 </div>
 
-<!-- PAGE 1 -->
+<!-- PAGE 1 LETTER -->
 <section class="page active" id="p1">
   <div class="paper center">
     <h1>My Dearest Lavanya ❤️</h1>
     <p>
       இது ஒரு இணையதளம் இல்லை…<br>
-      இது என் இதயம் 💖
+      இது என் இதயம் 💖<br><br>
+      Every moment with you is magic ✨
     </p>
     <button class="btn" onclick="go('p2')">Next ➜</button>
   </div>
 </section>
 
-<!-- PAGE 2 -->
+<!-- PAGE 2 MEMORIES -->
 <section class="page" id="p2">
+  <div class="paper center">
+    <h2>Our Beautiful Memories 📸</h2>
+    <div class="gallery">
+      <img src="images/1.jpg">
+      <img src="images/2.jpg">
+      <img src="images/3.jpg">
+      <img src="images/4.jpg">
+    </div>
+    <button class="btn" onclick="go('p3')">Next ➜</button>
+  </div>
+</section>
+
+<!-- PAGE 3 FUN QUESTIONS -->
+<section class="page" id="p3">
+  <div class="paper center">
+    <h2>Just a Few Questions 😄</h2>
+
+    <p>How much do you love me?</p>
+    <button class="btn" onclick="loveAnswer('Sea')">Sea 🌊</button>
+    <button class="btn" onclick="loveAnswer('Sky')">Sky 🌌</button>
+    <button class="btn" onclick="loveAnswer('Both')">Both 😌</button>
+    <p id="loveMsg"></p>
+
+    <p>You need a crab bite right? 🦀😄</p>
+    <button class="btn" onclick="crabAnswer()">Yes 😄</button>
+    <p id="crabMsg"></p>
+
+    <button class="btn" onclick="go('p4')">Next ➜</button>
+  </div>
+</section>
+
+<!-- PAGE 4 PROPOSAL -->
+<section class="page" id="p4">
   <div class="paper center">
     <h2>Will you marry me? 💍</h2>
     <button class="btn" onclick="sayYes()">YES ❤️</button>
@@ -120,8 +158,7 @@ input{
     <p>
       உன் சிரிப்பில் என் காலை ஆரம்பம்…<br>
       உன் பெயரில் என் இரவு முடிவு…<br><br>
-      இந்த ஜென்மமும்…<br>
-      எல்லா ஜென்மங்களிலும்…<br>
+      இந்த ஜென்மமும்… எல்லா ஜென்மங்களிலும்…<br>
       <b>நீ தான் என் வாழ்க்கை Lavanya ❤️</b>
     </p>
     <p><b>Forever yours,<br>Aravind ❤️</b></p>
@@ -137,63 +174,26 @@ function go(id){
   window.scrollTo(0,0);
 }
 
-/* 🎵 Start Music */
 function startMusic(){
-  const m = document.getElementById('bgm');
-  if(!m) return;
-
-  m.volume = 0.4;   // soft romantic start
-  m.currentTime = 0;
-
-  m.play().then(()=>{
-    console.log("Music started");
-  }).catch(err=>{
-    console.log("Blocked:", err);
-  });
+  const m=document.getElementById('bgm');
+  m.volume=0.4;
+  m.play();
 }
 
-/* 🔐 Unlock */
 function unlock(){
   const v=document.getElementById('pass').value.trim().toLowerCase();
-
   if(v!=='mine'){
     alert('Almost 😄');
     return;
   }
-
   document.getElementById('lock').style.display='none';
   go('p1');
 }
 
-/* 💍 YES moment */
-function sayYes(){
-  const m=document.getElementById('bgm');
-
-  // Volume swell
-  if(m){
-    let v=m.volume || 0.4;
-    const up=setInterval(()=>{
-      v+=0.05;
-      m.volume=Math.min(v,1);
-      if(v>=1) clearInterval(up);
-    },120);
-  }
-
-  for(let i=0;i<25;i++)spawnHeart();
-  setTimeout(()=>go('print'),1200);
+function loveAnswer(a){
+  document.getElementById('loveMsg').innerText =
+    a==='Both' ? 'Correct answer 😌❤️' : 'Think bigger 😄';
 }
 
-/* ❤️ Floating Hearts */
-function spawnHeart(){
-  const h=document.createElement('div');
-  h.className='heart';
-  h.textContent='❤️';
-  h.style.left=Math.random()*100+'vw';
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),6000);
-}
-
-</script>
-
-</body>
-</html>
+function crabAnswer(){
+  document.getElementById('crabMsg').innerText='Only for you 🦀❤️
