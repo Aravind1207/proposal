@@ -71,17 +71,6 @@ input{
   box-shadow:0 8px 20px rgba(0,0,0,.15);
 }
 
-/* Hearts */
-.heart{
-  position:fixed;
-  bottom:-30px;
-  font-size:24px;
-  animation:float 6s linear forwards
-}
-@keyframes float{
-  to{transform:translateY(-110vh);opacity:0}
-}
-
 /* Envelope */
 #envelope{
   position:fixed;
@@ -126,6 +115,31 @@ input{
   z-index:1500
 }
 
+/* Hearts */
+.heart{
+  position:fixed;
+  bottom:-30px;
+  font-size:24px;
+  animation:float 6s linear forwards
+}
+@keyframes float{
+  to{transform:translateY(-110vh);opacity:0}
+}
+
+/* Crab rain */
+.crab{
+  position:fixed;
+  top:-40px;
+  font-size:28px;
+  animation:crabFall 4s linear forwards;
+  pointer-events:none;
+  z-index:9999;
+}
+@keyframes crabFall{
+  0%{transform:translateY(0) rotate(0deg);opacity:1;}
+  100%{transform:translateY(110vh) rotate(360deg);opacity:0;}
+}
+
 /* Fire effect */
 .fire{
   font-size:28px;
@@ -149,43 +163,29 @@ input{
   color:#b44;
 }
 
-.kavithai{
-  font-size:22px;
-  line-height:1.6;
-}
-.print-note{
-  font-size:14px;
-  opacity:0.7;
-  text-align:center;
-  margin-top:20px;
-}
-
 @media print{
   body *{visibility:hidden}
   #printPage, #printPage *{visibility:visible}
-  #printPage{
-    position:absolute;
-    left:0;
-    top:0;
-    width:100%;
-  }
+  #printPage{position:absolute;left:0;top:0;width:100%}
   .btn{display:none}
 }
 </style>
 </head>
-
 <body>
 
+<!-- Envelope -->
 <div id="envelope">
   <div class="env" onclick="openEnvelope()">
     <p>Tap to open 💌</p>
   </div>
 </div>
 
+<!-- Music -->
 <audio id="bgm" loop playsinline>
 <source src="https://cdn.jsdelivr.net/gh/Aravind1207/proposal@main/pookal-pookum-tharunam.mp3" type="audio/mpeg">
 </audio>
 
+<!-- Lock -->
 <div id="lock">
   <div class="paper center">
     <h2>Secret Question 🔐</h2>
@@ -197,6 +197,7 @@ input{
   </div>
 </div>
 
+<!-- Page 1 -->
 <section class="page active" id="p1">
   <div class="paper center">
     <h1>My Dearest Lavanya ❤️</h1>
@@ -208,6 +209,7 @@ input{
   </div>
 </section>
 
+<!-- Page 2 Memories -->
 <section class="page" id="p2">
   <div class="paper center">
     <h2>Our Beautiful Memories 📸</h2>
@@ -221,24 +223,26 @@ input{
   </div>
 </section>
 
+<!-- Page 3 Fun -->
 <section class="page" id="p3">
-  <div class="paper">
-    <h2 class="center">Just a Few Questions 😄</h2>
-    <div class="divider"></div>
-    <p class="kavithai center">How much do you love me? 💕</p>
-    <div class="center">
-      <button class="btn" onclick="loveAnswer('Sea')">Sea 🌊</button>
-      <button class="btn" onclick="loveAnswer('Sky')">Sky 🌌</button>
-      <button class="btn" onclick="loveAnswer('Both')">Both 😌</button>
-    </div>
-    <p id="loveMsg" class="center"></p>
-    <p class="kavithai center">You need a crab bite right? 🦀😄</p>
-    <div class="center"><button class="btn" onclick="crabAnswer()">Yes 😄</button></div>
-    <p id="crabMsg" class="center"></p>
-    <div class="center"><button class="btn" onclick="go('p4')">Next ➜</button></div>
+  <div class="paper center">
+    <h2>Just a Few Questions 😄</h2>
+
+    <p>How much do you love me?</p>
+    <button class="btn" onclick="loveAnswer('Sea')">Sea 🌊</button>
+    <button class="btn" onclick="loveAnswer('Sky')">Sky 🌌</button>
+    <button class="btn" onclick="loveAnswer('Both')">Both 😌</button>
+    <p id="loveMsg"></p>
+
+    <p>You need a crab bite right? 🦀😄</p>
+    <button class="btn" onclick="crabAnswer()">Yes 😄</button>
+    <p id="crabMsg"></p>
+
+    <button class="btn" onclick="go('p4')">Next ➜</button>
   </div>
 </section>
 
+<!-- Page 4 Proposal -->
 <section class="page" id="p4">
   <div class="paper center">
     <h2>Will you marry me? 💍</h2>
@@ -250,20 +254,18 @@ input{
   </div>
 </section>
 
+<!-- Print Page -->
 <section class="page" id="printPage">
-  <div class="paper">
-    <h2 class="center">A Letter Forever 💌</h2>
-    <p class="kavithai">
+  <div class="paper center">
+    <h2>A Letter Forever 💌</h2>
+    <p>
       உன் சிரிப்பில் ஆரம்பிக்கும் என் காலை...<br/>
       உன் பெயரில் முடியும் என் இரவு...<br/>
       இந்த ஜென்மத்தில் மட்டும் இல்லை, எல்லா ஜென்மங்களிலும் —<br/>
       <b>நீ தான் என் வாழ்க்கை துணை, Lavanya ❤️</b>
     </p>
-    <p class="center"><b>Forever yours,<br/>Aravind ❤️</b></p>
-    <p class="print-note">14.02.2025</p>
-    <div class="center">
-      <button class="btn" onclick="window.print()">Save as PDF 🖨️</button>
-    </div>
+    <p><b>Forever yours,<br/>Aravind ❤️</b></p>
+    <button class="btn" onclick="window.print()">Save as PDF 🖨️</button>
   </div>
 </section>
 
@@ -288,43 +290,46 @@ function startMusic(){
 
 function unlock(){
   const v=document.getElementById('pass').value.trim().toLowerCase();
-  if(v!=='mine'){
-    alert('Almost 😄');
-    return;
-  }
+  if(v!=='mine'){ alert('Almost 😄'); return; }
   document.getElementById('lock').style.display='none';
   go('p1');
 }
 
 /* Countdown */
-function startCountdown(){
+(function(){
   const el=document.getElementById('countdown');
   const end=new Date('2025-02-14T19:00:00').getTime();
   setInterval(()=>{
     const d=end-Date.now();
-    if(d<=0){
-      el.innerHTML="This moment is forever 💍";
-      return;
-    }
+    if(d<=0){ el.innerHTML="This moment is forever 💍"; return; }
     const days=Math.floor(d/86400000);
     const hours=Math.floor((d%86400000)/3600000);
     const mins=Math.floor((d%3600000)/60000);
     el.innerHTML=`${days}d ${hours}h ${mins}m`;
   },1000);
-}
-startCountdown();
+})();
 
 function loveAnswer(a){
   document.getElementById('loveMsg').innerText =
-    a==='Both' ? 'Correct answer 😌❤️' : 'Think bigger 😄';
+  a==='Both'?'Correct answer 😌❤️':'Think bigger 😄';
+}
+
+function crabAnswer(){
+  document.getElementById('crabMsg').innerText='Only for you 🦀❤️';
+  for(let i=0;i<25;i++){
+    const crab=document.createElement('div');
+    crab.className='crab';
+    crab.textContent='🦀';
+    crab.style.left=Math.random()*100+'vw';
+    document.body.appendChild(crab);
+    setTimeout(()=>crab.remove(),5000);
+  }
 }
 
 function sayYes(){
   const m=document.getElementById('bgm');
-
-  /* Lyric sync effect */
   if(m){
-    m.currentTime = 60; // jump to emotional lyric moment
+    m.currentTime=60;
     let v=0.3;
     const up=setInterval(()=>{
       v+=0.05;
