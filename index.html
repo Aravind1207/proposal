@@ -270,7 +270,6 @@ input{
 </section>
 
 <script>
-
 function openEnvelope(){
   document.getElementById('envelope').style.display='none';
   document.getElementById('lock').style.display='flex';
@@ -329,8 +328,7 @@ function crabAnswer(){
 function sayYes(){
   const m=document.getElementById('bgm');
   if(m){
-    m.currentTime=60;
-    let v=0.3;
+    let v=m.volume || 0.3;
     const up=setInterval(()=>{
       v+=0.05;
       m.volume=Math.min(v,1);
@@ -340,18 +338,29 @@ function sayYes(){
 
   document.getElementById('flames').style.display='block';
 
-  for(let i=0;i<30;i++){
+  // Heart animation
+  for(let i=0;i<50;i++){
     const h=document.createElement('div');
     h.className='heart';
     h.textContent='❤️';
     h.style.left=Math.random()*100+'vw';
+    h.style.fontSize=(16+Math.random()*20)+'px';
     document.body.appendChild(h);
     setTimeout(()=>h.remove(),6000);
   }
 
-  setTimeout(()=>go('printPage'),1500);
-}
+  // Extra crab rain
+  for(let i=0;i<30;i++){
+    const c=document.createElement('div');
+    c.className='crab';
+    c.textContent='🦀';
+    c.style.left=Math.random()*100+'vw';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),6000);
+  }
 
+  setTimeout(()=>go('printPage'),1800);
+}
 </script>
 
 </body>
